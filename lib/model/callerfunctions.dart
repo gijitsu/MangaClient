@@ -26,7 +26,7 @@ Future<Map<String, dynamic>> graphqlQuery(
   }
 }
 
-const baseUrl = 'api.mangadex.org';
+const baseUrl = 'https://proxy.bertmpngn.workers.dev/';
 Future<http.Response> fetchTitle(title) {
   final queryParameters = {"title": title};
   final uri = Uri.https(baseUrl, '/manga', queryParameters);
@@ -34,7 +34,7 @@ Future<http.Response> fetchTitle(title) {
 }
 
 Future<Map<String, dynamic>> fetchStatistics(String mangaId) async {
-  var url = Uri.parse('https://api.mangadex.org/statistics/manga/' + mangaId);
+  var url = Uri.parse('https://proxy.bertmpngn.workers.dev/statistics/manga/' + mangaId);
   var response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -87,7 +87,7 @@ Future<http.Response> fetchChapters(id, {int offset = 0, int limit = 100}) {
 }
 
 Future<Map<String, dynamic>> makeGetRequest(String chapterId) async {
-  var url = Uri.parse('https://api.mangadex.org/at-home/server/' + chapterId);
+  var url = Uri.parse('https://proxy.bertmpngn.workers.dev/at-home/server/' + chapterId);
   var response = await http.get(url);
 
   if (response.statusCode == 200) {
