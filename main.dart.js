@@ -25476,7 +25476,7 @@ qD(a,b){var s,r,q=null,p=t.p,o=A.b([],p)
 if(!b){o.push(A.cw(q,q,A.aM(a,q,t.w).w.a.a*0.2))
 o.push(A.lY(!1,q,!0,A.j2(B.F4,B.k,q,q),q,!0,q,q,q,q,q,q,q,q,q,new A.apz(a),q,q,q,q))}s=A.bX(q,q,B.n,q,q,B.Am,q,q,q,q,q,q,q)
 r=A.aM(a,q,t.w).w
-p=A.b([new A.rM(A.axl(q,q,new A.nP("assets/Logo.png",q,q)),r.a.a*0.2,50,q,q),A.arc(A.aP("APNGManga",q,q,q,A.aPq().$1$textStyle(B.yY),q,q),B.iq)],p)
+p=A.b([new A.rM(A.axl(q,q,new A.nP("assets/Logo.png",q,q)),r.a.a*0.2,50,q,q),A.arc(A.aP("A-Manga",q,q,q,A.aPq().$1$textStyle(B.yY),q,q),B.iq)],p)
 B.b.T(p,o)
 p=A.cN(p,B.P,B.ez,B.y)
 return new A.wf(p,s,new A.cm(q,q,q,q,q,B.k,q,q,q),new A.RU(q,q,1/0,56),q)},
@@ -25590,11 +25590,11 @@ return A.K($async$apt,r)},
 aOE(a,b){var s=A.w(t.N,t.z)
 a.ae(0,new A.aps(s))
 s.m(0,"title",b)
-return A.W3(A.asE("https","https://proxy.bertmpngn.workers.dev/","/manga",s))},
+return A.W3(A.asE("https","proxy.bertmpngn.workers.dev","/manga",s))},
 aAr(a,b,c){var s=A.aa(["order[volume]","asc","order[chapter]","asc","translatedLanguage[]","en"],t.N,t.z)
 s.m(0,"offset",B.i.k(c))
 s.m(0,"limit",B.i.k(b))
-return A.W3(A.asE("https","https://proxy.bertmpngn.workers.dev/","/manga/"+a+"/feed",s))},
+return A.W3(A.asE("https","proxy.bertmpngn.workers.dev","/manga/"+a+"/feed",s))},
 apZ(a){var s=0,r=A.L(t.a),q,p
 var $async$apZ=A.H(function(b,c){if(b===1)return A.I(c,r)
 while(true)switch(s){case 0:s=3
@@ -82500,7 +82500,7 @@ i=J.bd(d)
 s=J.d(i.h(d,"type"),"cover_art")?6:7
 break
 case 6:s=8
-return A.O(A.W3(A.asE("https","https://proxy.bertmpngn.workers.dev/",B.d.V("/cover/",i.h(d,"id")),null)).b0(new A.aiw(o),n),$async$$1)
+return A.O(A.W3(A.asE("https","proxy.bertmpngn.workers.dev",B.d.V("/cover/",i.h(d,"id")),null)).b0(new A.aiw(o),n),$async$$1)
 case 8:case 7:s=4
 break
 case 5:s=2
