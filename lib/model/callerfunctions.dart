@@ -26,7 +26,7 @@ Future<Map<String, dynamic>> graphqlQuery(
   }
 }
 
-const baseUrl = 'https://proxy.bertmpngn.workers.dev/';
+const baseUrl = 'proxy.bertmpngn.workers.dev';
 Future<http.Response> fetchTitle(title) {
   final queryParameters = {"title": title};
   final uri = Uri.https(baseUrl, '/manga', queryParameters);
