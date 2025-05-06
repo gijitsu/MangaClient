@@ -3,13 +3,6 @@ import 'dart:math';
 import '../MangaSummary.dart';
 import '../ReviewSpecPage.dart';
 
-/// These imports only work on web and will be ignored on other platforms
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-import 'dart:ui' as ui;
-
-import 'package:flutter/foundation.dart' show kIsWeb;
-
 class MangaPreview extends StatefulWidget {
   MangaPreview({
     super.key,
@@ -47,27 +40,14 @@ class MangaPreview extends StatefulWidget {
 }
 
 class _MangaPreviewState extends State<MangaPreview> {
-  late final String viewType;
-  late final String coverUrl;
-
   @override
   void initState() {
     super.initState();
-    coverUrl =
-        'https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}';
-    viewType = 'cover-${widget.id}-${widget.coverfilename}';
-
-    // This prevents multiple registrations in hot reload
-    // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(viewType, (int viewId) {
-      final img = html.ImageElement()
-        ..src = coverUrl
-        ..style.borderRadius = '16px'
-        ..style.objectFit = 'cover'
-        ..width = widget.coverWidth.toInt()
-        ..height = widget.coverHeight.toInt();
-      return img;
-    });
+    // Debug logging
+    // print('MangaPreview initialized with:');
+    // print('ID: ${widget.id}');
+    // print('Cover Filename: ${widget.coverfilename}');
+    // print('https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}');
   }
 
   @override
@@ -85,6 +65,9 @@ class _MangaPreviewState extends State<MangaPreview> {
           ) +
           "\n";
     }
+
+    final String coverUrl =
+        'https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}';
 
     return InkWell(
       onTap: () {
@@ -125,10 +108,19 @@ class _MangaPreviewState extends State<MangaPreview> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
-              child: SizedBox(
+              child: Image.network(
+                coverUrl,
                 height: widget.coverHeight,
                 width: widget.coverWidth,
-                child: HtmlElementView(viewType: viewType),
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: widget.coverHeight,
+                    width: widget.coverWidth,
+                    color: Colors.grey,
+                    child: Icon(Icons.broken_image),
+                  );
+                },
               ),
             ),
             Flexible(
