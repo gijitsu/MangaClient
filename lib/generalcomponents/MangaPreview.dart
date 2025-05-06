@@ -113,6 +113,7 @@ class _MangaPreviewState extends State<MangaPreview> {
                 height: widget.coverHeight,
                 width: widget.coverWidth,
                 fit: BoxFit.cover,
+                webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     height: widget.coverHeight,
