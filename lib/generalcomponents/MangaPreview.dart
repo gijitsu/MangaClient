@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
+
 import '../MangaSummary.dart';
 import '../ReviewSpecPage.dart';
 
@@ -40,14 +44,34 @@ class MangaPreview extends StatefulWidget {
 }
 
 class _MangaPreviewState extends State<MangaPreview> {
+  Uint8List? _imageBytes;
+  bool _loading = true;
+
   @override
   void initState() {
     super.initState();
-    // Debug logging
-    // print('MangaPreview initialized with:');
-    // print('ID: ${widget.id}');
-    // print('Cover Filename: ${widget.coverfilename}');
-    // print('https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}');
+    _loadImage();
+  }
+
+  Future<void> _loadImage() async {
+    final imageUrl =
+        'https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}';
+
+    try {
+      final response = await http.get(Uri.parse(imageUrl));
+      if (response.statusCode == 200) {
+        setState(() {
+          _imageBytes = response.bodyBytes;
+          _loading = false;
+        });
+      } else {
+        print("Image load failed: ${response.statusCode}");
+        setState(() => _loading = false);
+      }
+    } catch (e) {
+      print("Error loading image: $e");
+      setState(() => _loading = false);
+    }
   }
 
   @override
@@ -60,69 +84,59 @@ class _MangaPreviewState extends State<MangaPreview> {
         i < lessenedTitle.length;
         i += widget.numberOfCharactersPerLine) {
       actualTitle += lessenedTitle.substring(
-            i,
-            min(i + widget.numberOfCharactersPerLine, lessenedTitle.length),
-          ) +
+              i, min(i + widget.numberOfCharactersPerLine, lessenedTitle.length)) +
           "\n";
     }
 
-    final String coverUrl =
-        'https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}';
-
     return InkWell(
       onTap: () {
-        if (widget.types == 'Review') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PageReview(
+        final coverUrl =
+            'https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}';
+
+        final page = widget.types == 'Review'
+            ? PageReview(
                 id: widget.id,
                 title: widget.title,
                 tags: widget.tags,
                 description: widget.description,
                 coverArt: coverUrl,
                 userData: widget.userData,
-              ),
-            ),
-          );
-        } else {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MangaSummary(
+              )
+            : MangaSummary(
                 id: widget.id,
                 title: widget.title,
                 tags: widget.tags,
                 description: widget.description,
                 coverArt: coverUrl,
                 userData: widget.userData,
-              ),
-            ),
-          );
-        }
+              );
+
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
       child: SizedBox(
         height: widget.boxHeight,
         width: widget.boxWidth,
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: Image.network(
-                coverUrl,
-                height: widget.coverHeight,
-                width: widget.coverWidth,
-                fit: BoxFit.cover,
-                webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: widget.coverHeight,
-                    width: widget.coverWidth,
-                    color: Colors.grey,
-                    child: Icon(Icons.broken_image),
-                  );
-                },
+            Container(
+              height: widget.coverHeight,
+              width: widget.coverWidth,
+              margin: const EdgeInsets.fromLTRB(2.0, 0.0, 0.0, 0.0),
+              decoration: BoxDecoration(
+                border: Border.all(width: 2),
+                borderRadius: BorderRadius.circular(16.0),
               ),
+              child: _loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _imageBytes != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(14.0),
+                          child: Image.memory(
+                            _imageBytes!,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : const Center(child: Icon(Icons.broken_image)),
             ),
             Flexible(
               child: Container(
