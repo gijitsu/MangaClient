@@ -74,7 +74,7 @@ class _MangaPreviewState extends State<MangaPreview> {
                               title: widget.title,
                               tags: widget.tags,
                               description: widget.description,
-                              coverArt: 'https://uploads.mangadex.org/covers/' +
+                              coverArt: 'https://proxy.bertmpngn.workers.dev/covers/' +
                                   widget.id +
                                   '/' +
                                   widget.coverfilename,
@@ -92,7 +92,7 @@ class _MangaPreviewState extends State<MangaPreview> {
                               title: widget.title,
                               tags: widget.tags,
                               description: widget.description,
-                              coverArt: 'https://uploads.mangadex.org/covers/' +
+                              coverArt: 'https://proxy.bertmpngn.workers.dev/covers/' +
                                   widget.id +
                                   '/' +
                                   widget.coverfilename,
@@ -115,7 +115,7 @@ class _MangaPreviewState extends State<MangaPreview> {
                       borderRadius: BorderRadius.circular(16.0),
                       image: DecorationImage(
                           image: NetworkImage(
-                              'https://uploads.mangadex.org/covers/' +
+                              'https://proxy.bertmpngn.workers.dev/covers/' +
                                   widget.id +
                                   '/' +
                                   widget.coverfilename),

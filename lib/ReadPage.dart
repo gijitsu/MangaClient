@@ -94,7 +94,7 @@ class _ReadState extends State<Read> {
         minScale: 0.1,
         maxScale: 4.0,
         child: Image.network(
-            'https://uploads.mangadex.org/data/' +
+            'https://proxy.bertmpngn.workers.dev/data/' +
                 hash +
                 '/' +
                 pages[dropDownvalue1]!,
