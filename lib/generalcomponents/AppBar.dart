@@ -47,7 +47,7 @@ AppBar getAppBar(context, {bool firstPages = false}) {
           FittedBox(
             fit: BoxFit.fitWidth,
             child: Text(
-              'APNGManga',
+              'A-Manga',
               style: GoogleFonts.montserrat(
                   textStyle: const TextStyle(
                 color: Colors.black,
