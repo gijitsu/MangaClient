@@ -41,6 +41,16 @@ class MangaPreview extends StatefulWidget {
 
 class _MangaPreviewState extends State<MangaPreview> {
   @override
+  void initState() {
+    super.initState();
+    // Debug logging
+    //print('MangaPreview initialized with:');
+    // print('ID: ${widget.id}');
+    // print('Cover Filename: ${widget.coverfilename}');
+    // print('https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}');
+  }
+
+  @override
   Widget build(BuildContext context) {
     int sz = widget.title.length;
     String lessenedTitle =
@@ -57,7 +67,7 @@ class _MangaPreviewState extends State<MangaPreview> {
     }
 
     final String coverUrl =
-        'https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}';
+        'https://proxy.bertmpngn.workers.dev/covers/801513ba-a712-498c-8f57-cae55b38cc92/22ff2622-e93c-420f-b477-7a86eec02a1d.jpg';
 
     return InkWell(
       onTap: () {
