@@ -1,35 +1,25 @@
 import 'package:flutter/material.dart';
-
-import 'dart:convert';
 import 'dart:math';
 import '../MangaSummary.dart';
 import '../ReviewSpecPage.dart';
 
 class MangaPreview extends StatefulWidget {
-  MangaPreview(
-      {super.key,
-      required this.title,
-      required this.totalNumberOfCharacters,
-      required this.numberOfCharactersPerLine,
-      required this.boxHeight,
-      required this.boxWidth,
-      required this.coverHeight,
-      required this.coverWidth,
-      required this.id,
-      required this.coverfilename,
-      required this.tags,
-      required this.description,
-      required this.userData,
-      required this.types});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  MangaPreview({
+    super.key,
+    required this.title,
+    required this.totalNumberOfCharacters,
+    required this.numberOfCharactersPerLine,
+    required this.boxHeight,
+    required this.boxWidth,
+    required this.coverHeight,
+    required this.coverWidth,
+    required this.id,
+    required this.coverfilename,
+    required this.tags,
+    required this.description,
+    required this.userData,
+    required this.types,
+  });
 
   String title;
   int totalNumberOfCharacters;
@@ -44,6 +34,7 @@ class MangaPreview extends StatefulWidget {
   String description;
   String types;
   dynamic userData;
+
   @override
   State<MangaPreview> createState() => _MangaPreviewState();
 }
@@ -58,86 +49,89 @@ class _MangaPreviewState extends State<MangaPreview> {
     for (int i = 0;
         i < lessenedTitle.length;
         i += widget.numberOfCharactersPerLine) {
-      actualTitle += lessenedTitle.substring(i,
-              min(i + widget.numberOfCharactersPerLine, lessenedTitle.length)) +
+      actualTitle += lessenedTitle.substring(
+            i,
+            min(i + widget.numberOfCharactersPerLine, lessenedTitle.length),
+          ) +
           "\n";
     }
+
+    final String coverUrl =
+        'https://proxy.bertmpngn.workers.dev/covers/${widget.id}/${widget.coverfilename}';
+
     return InkWell(
-        onTap: () => {
-              if (widget.types == 'Review')
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PageReview(
-                              id: widget.id,
-                              title: widget.title,
-                              tags: widget.tags,
-                              description: widget.description,
-                              coverArt: 'https://proxy.bertmpngn.workers.dev/covers/' +
-                                  widget.id +
-                                  '/' +
-                                  widget.coverfilename,
-                              userData: widget.userData,
-                            )),
-                  )
-                }
-              else
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MangaSummary(
-                              id: widget.id,
-                              title: widget.title,
-                              tags: widget.tags,
-                              description: widget.description,
-                              coverArt: 'https://proxy.bertmpngn.workers.dev/covers/' +
-                                  widget.id +
-                                  '/' +
-                                  widget.coverfilename,
-                              userData: widget.userData,
-                            )),
-                  )
-                }
-            },
-        child: SizedBox(
-            height: widget.boxHeight,
-            width: widget.boxWidth,
-            child: Column(
-              children: [
-                Container(
-                  height: widget.coverHeight,
-                  width: widget.coverWidth,
-                  margin: EdgeInsets.fromLTRB(2.0, 0.0, 0.0, 0.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 2),
-                      borderRadius: BorderRadius.circular(16.0),
-                      image: DecorationImage(
-                          image: NetworkImage(
-                              'https://proxy.bertmpngn.workers.dev/covers/' +
-                                  widget.id +
-                                  '/' +
-                                  widget.coverfilename),
-                          fit: BoxFit.cover)),
-                ),
-                Flexible(
-                  child: Container(
-                    margin: EdgeInsets.only(right: 5),
-                    height: 100,
-                    child: SingleChildScrollView(
-                      child: Text(
-                        actualTitle,
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                        ),
-                      ),
+      onTap: () {
+        if (widget.types == 'Review') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PageReview(
+                id: widget.id,
+                title: widget.title,
+                tags: widget.tags,
+                description: widget.description,
+                coverArt: coverUrl,
+                userData: widget.userData,
+              ),
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MangaSummary(
+                id: widget.id,
+                title: widget.title,
+                tags: widget.tags,
+                description: widget.description,
+                coverArt: coverUrl,
+                userData: widget.userData,
+              ),
+            ),
+          );
+        }
+      },
+      child: SizedBox(
+        height: widget.boxHeight,
+        width: widget.boxWidth,
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+              child: Image.network(
+                coverUrl,
+                height: widget.coverHeight,
+                width: widget.coverWidth,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: widget.coverHeight,
+                    width: widget.coverWidth,
+                    color: Colors.grey,
+                    child: Icon(Icons.broken_image),
+                  );
+                },
+              ),
+            ),
+            Flexible(
+              child: Container(
+                margin: const EdgeInsets.only(right: 5),
+                height: 100,
+                child: SingleChildScrollView(
+                  child: Text(
+                    actualTitle,
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 13,
                     ),
                   ),
                 ),
-              ],
-            )));
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
